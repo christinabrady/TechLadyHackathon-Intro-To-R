@@ -1,0 +1,234 @@
+---
+title: "Intro to R"
+output: ioslides_presentation
+---
+## Slide 1: Overview
+* What is R?
+* Installing and Setting up R 
+* Data Types
+* Data Structures
+* reading in Data
+* Data Sources
+
+## Slide 2: What is R and what can I do with it?
+* analysis
+  + Summary Statics (mean, median mode, range)
+  + Analysis of statistical significance (p tests and t tests, ANOVA)
+  + Prediction (regression models, decision trees, Random Forest)
+  + Text analysis
+
+## Slide 3: What is R and what can I do with it?
+* visualize data statically
+```{r}
+plot(mtcars$mpg, mtcars$wt)
+```
+* visualize data interactively
+
+## Slide 4: What is R and what can I do with it?
+* build reports and presentations
+  + this presentation
+  + create MS Word and PPT documents [link] (https://davidgohel.github.io/ReporteRs/gettingstarted.html)
+
+## Slide 5: What is R and what can I do with it?
+* data products
+[link] (http://www.showmeshiny.com/)
+
+## Slide 6: Getting started
+* downloading R: [link] (http://cran.us.r-project.org/)
+* RStudio: [link] (https://www.rstudio.com/products/rstudio/download/)
+
+## Slide 7: Packages
+* What are packages? 
+* installing and attaching packages
+```{r, eval = FALSE}
+install.packages("package_name")
+library(package_name)
+```
+You will also see:
+```{r, eval = FALSE}
+require(package_name)
+```
+
+However it is not a good idea to use it. If it is not able to attach the desired package, you won't get an error until you try to use it. It is better to know at the beginning. 
+
+## Slide 8: Built in Datasets
+R has a lot of built in datasets that you can use to practice on. You can see a full list of them by typing: 
+```{r}
+library(help = "datasets")
+```
+You can actually do this for any package. (Try to get used to reading documentation. It will become your best friend. Also, stackoverflow). 
+
+## Slide 9a: Data Types (1 of 2)
+* Character
+```{r, echo = FALSE}
+"Hello Tech Ladies"
+```
+* numeric
+```{r, echo = FALSE}
+head(mtcars$cyl)
+```
+* integer
+```{r, echo = FALSE}
+head(mtcars$wt)
+```
+
+## Slide 9b: Data Types (2 of 2)
+
+* date
+```{r, echo = FALSE}
+as.Date('2015-08-07')
+```
+* factor (data frames) (we'll talk more about these later)
+```{r, echo = FALSE}
+unique(iris$Species)
+```
+
+## Slide 10: Data Structures
+* vectors
+* data frames
+* lists
+
+## Slide 11: Vectors
+* set of data points
+* can be character, integer, numeric, dates
+* can only be one of the above
+
+## Slide 12: Creating Vectors
+* c() function
+```{r}
+c(5, 6, 7, 8)
+c("Christina", "Leah", "Shanoon", "Adriana")
+```
+* words or characters must be enclosed in quotations otherwise R will complain
+* capitalization is important
+
+## Slide 13: Side Trip: Variables
+* assigning vectors, data frames and lists to variables allows us to manipulate them
+```{r}
+tech_ladies <- c("Christina", "Leah", "Shanoon", "Adriana")
+tech_ladies2 = c("Christina", "Leah", "Shanoon", "Adriana")
+```
+* <- vs =
+* when you assign a variable, R doesn't return anything
+* you can see what is in a variable by typing its name
+```{r}
+tech_ladies
+```
+
+## Slide 14: Side Trip: Variables
+* careful not to accidently change your variables
+```{r}
+tech_ladies <- "Stephen"
+tech_ladies
+```
+
+## Slide 15a: Modifying Vectors (1 of 2)
+* add to a vector with c()
+```{r} 
+tech_ladies2 <- c(tech_ladies2, "Maria")
+```
+* change a value
+```{r}
+tech_ladies2[3] <- "Sarah"
+tech_ladies2
+```
+
+## Slide 15b: Modifying Vectors (2 of 2)
+* delete a value (slightly more complicated)
+```{r}
+remove <- "Adriana"
+tech_ladies2 <- tech_ladies2[! tech_ladies2 %in% remove]
+tech_ladies2
+```
+
+## Slide 16: Data Frames
+* ordered collection of vectors
+* columns are the variables or attributes in your data set
+* rows are the observations
+* can hold multiple types of data (i.e. characters, integers, numbers and dates)
+```{r, echo = FALSE}
+head(mtcars)
+```
+
+## Slide 17: Creating Data Frames:
+* data.frame(x = x, y = y)
+* as.data.frame(table)
+* read.csv()
+```{r}
+a <- data.frame(x = tech_ladies2, y = c(6, 2, 8, 4))  
+## x and y must have the same length
+a
+hec <- as.data.frame(HairEyeColor)
+#dat <- read.csv() ## we'll see this in a bit. 
+```
+
+## Slide 18: Factor Variables
+* specific to data frames
+* special because sometimes they are required, sometime they interfere. 
+```{r}
+str(hec)
+```
+
+## Slide 19a: Subsetting DF (1 of 3)
+* subset(data, boolean, select = desired_columns)
+* [row, column]
+* [row == x, column == y]
+```{r}
+head(hec)
+```
+
+## Slide 19b: Subsetting DF (2 of 3)
+```{r}
+subset(hec, Hair == "Red")
+subset(hec, select = "Eye")
+```
+
+## Slide 19c: Subsetting DF (3 of 3)
+```{r}
+hec[5,3]
+hec[, "Sex"]
+```
+
+## Slide 20a: Lists (1 of 2)
+* like vectors but can have distinct data types including data frames and other lists
+* useful for splitting and iterating over
+```{r}
+hec_split <- split(hec, hec$Eye)
+str(hec_split)
+```
+
+## Slide 20b: Lists (2 of 2)
+```{r}
+tots <- lapply(hec_split, function(x) sum(x$Freq))
+tots
+```
+
+## Slide 21: Reading in data:
+* read.csv()
+```{r}
+pur <- read.csv("./data//Purchase_order_FY15.csv", stringsAsFactors = FALSE)
+str(pur)
+```
+
+## Slide 22a: Data Sets (1 of 2)
+* DC Open Data [link] (http://data.octo.dc.gov/)
+* NYC Open Data [link] (https://nycopendata.socrata.com/)
+* Data.gov [link] (http://catalog.data.gov/dataset?groups=businessusa4208#topic=business_navigation)
+* World Bank Data Catalog [link] (http://datacatalog.worldbank.org/)
+* World Bank API [link] (http://data.worldbank.org/developers/data-catalog-api)
+* UN Data [link] (https://data.un.org/DataMartInfo.aspx)
+* Data Science Central (warehouse for data sets, many are the same as those above) [link] (http://www.datasciencecentral.com/profiles/blogs/the-free-big-data-sources-everyone-should-know)
+
+## Slide 22b: Data Sets (2 of 2)
+* KD nuggests (also a warehouse for sources of public data sets) [link] (http://www.kdnuggets.com/datasets/index.html)
+* Quora (yet another warehouse) [link] (http://www.quora.com/Where-can-I-find-large-datasets-open-to-the-public)
+* UCI Machine Learning Rpository [link] (http://archive.ics.uci.edu/ml/)
+* The Guardian Data Blog (make data sets available) [link] (http://www.theguardian.com/data/all)
+
+## Slide 23: Learning Resources/R Blogs:
+* Rbloggers
+* Stackoverflow
+* Coursera Data Analysis and Statistical Inference
+* DataCamp
+
+
