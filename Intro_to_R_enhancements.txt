@@ -1,0 +1,9 @@
+Intro to R presentation enhancements:
+
+Add example of when to use c():
+
+for subsetting: subset(data, select = c(var1, var2, var3)
+to create vectors of colors when graphing instead of rewriting it every time:
+c(“blue”, “orange”, “red”)
+
+add more graphs
